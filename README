@@ -51,3 +51,65 @@ mcsym-bug@iro.umontreal.ca
 
 Copyright � 2000 Laboratoire de Biologie Informatique et Th�orique,
 Universit� de Montr�al.
+
+
+MODERN BUILD NOTES (CMake)
+=========================
+
+This repository vendors the MC-Core ("mccore") library for use by MC-Annotate.
+The original upstream documentation predates the CMake-based build found in
+this tree.
+
+Requirements:
+  - A C++ compiler (GCC/Clang)
+  - CMake
+  - zlib development headers (e.g. zlib1g-dev on Debian/Ubuntu, zlib-devel on CentOS/RHEL)
+
+Important:
+  - Use C++14 (or older). C++17+ is not supported by this codebase as-is.
+
+Example build/install (Linux):
+  cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/opt/mctools \
+    -DCMAKE_CXX_STANDARD=14 -DCMAKE_CXX_EXTENSIONS=ON
+  cmake --build build -j
+  cmake --install build
+
+Install layout:
+  - Headers: <prefix>/include/mccore/...
+  - Library: <prefix>/lib/libmccore.so or <prefix>/lib64/libmccore.so (depending on the build)
+
+
+DEPLOYMENT / RELOCATION (Linux)
+===============================
+
+If you need to run on an older distribution (e.g. CentOS 8), prefer building
+on that distribution (or inside a CentOS 8 container/VM). Copying binaries
+built on a newer distro can fail due to glibc version requirements.
+
+To bundle into a single directory prefix (example: /opt/mctools):
+
+  1) Build + install into a staging directory:
+       DESTDIR=$PWD/_pkg cmake --install build
+
+  2) Create a tarball:
+       tar -C _pkg -czf mccore-linux-x86_64.tar.gz opt/mctools
+
+  3) On the target machine, extract:
+       sudo tar -C / -xzf mccore-linux-x86_64.tar.gz
+
+  4) Ensure the dynamic linker can find the library (choose one):
+       export LD_LIBRARY_PATH=/opt/mctools/lib64:/opt/mctools/lib:$LD_LIBRARY_PATH
+     or
+       echo /opt/mctools/lib64 | sudo tee /etc/ld.so.conf.d/mctools.conf
+       echo /opt/mctools/lib   | sudo tee -a /etc/ld.so.conf.d/mctools.conf
+       sudo ldconfig
+
+
+PORTABILITY PATCHES
+===================
+
+This codebase is historically old; some minimal source changes may be required
+to build with modern compilers/standard libraries (e.g. name lookup conflicts
+with system calls and stricter STL requirements). These changes are intended to
+preserve behavior while improving build compatibility.

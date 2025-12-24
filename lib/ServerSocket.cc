@@ -73,13 +73,13 @@ namespace mccore
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons (port);
     
-    if (bind (socket_id, (sockaddr*) &sin, (socklen_t) sizeof (sin)) < 0) {
+    if (::bind (socket_id, (sockaddr*) &sin, (socklen_t) sizeof (sin)) < 0) {
       //      FatalSocketException exc ("socket binding failed", __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
       //      throw exc;
     }
     
-    if (listen (socket_id, MAX_QUEUE_LEN) < 0) {
+    if (::listen (socket_id, MAX_QUEUE_LEN) < 0) {
       //      FatalSocketException exc ("socket listening failed", __FILE__, __LINE__);
       //      exc << ": " << strerror (errno);
       //      throw exc;

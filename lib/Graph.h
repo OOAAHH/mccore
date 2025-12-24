@@ -122,7 +122,7 @@ namespace mccore
 
       // OPERATORS ------------------------------------------------------------
 
-    protected:
+	    public:
 
       /**
        * Assigns the endvertices with the right's content.
@@ -139,8 +139,7 @@ namespace mccore
 	return *this;
       }
 
-    public:
-      
+	      
       /**
        * Tests whether this equals right.
        * @param right the endvertices to compare.
@@ -171,68 +170,6 @@ namespace mccore
 	return (head < right.head
 		|| (head == right.head
 		    && tail < right.tail));
-      }
-
-      // ACCESS ---------------------------------------------------------------
-      
-      /**
-       * Gets the head vertex.
-       * @return the head vertex.
-       * @exception NoSuchElementException if the head label is outside the
-       * vertex container.
-       */
-      V& getHeadVertex () throw (NoSuchElementException)
-      {
-	if (vertices.size () <= head)
-	  {
-	    throw NoSuchElementException ();
-	  }
-	return vertices[head];
-      }
-
-      /**
-       * Gets the head vertex.
-       * @return the head vertex.
-       * @exception NoSuchElementException if the head label is outside the
-       * vertex container.
-       */
-      const V& getHeadVertex () const throw (NoSuchElementException)
-      {
-	if (vertices.size () <= head)
-	  {
-	    throw NoSuchElementException ();
-	  }
-	return vertices[head];
-      }
-
-      /**
-       * Gets the tail vertex.
-       * @return the tail vertex.
-       * @exception NoSuchElementException if the tail label is outside the
-       * vertex container.
-       */
-      V& getTailVertex () throw (NoSuchElementException)
-      {
-	if (vertices.size () <= tail)
-	  {
-	    throw NoSuchElementException ();
-	  }
-	return vertices[tail];
-      }
-
-      /**
-       * Gets the tail vertex.
-       * @return the tail vertex.
-       * @exception NoSuchElementException if the tail label is outside the
-       * vertex container.
-       */
-      const V& getTailVertex () const throw (NoSuchElementException)
-      {
-	if (vertices.size () <= tail)
-	  {
-	    throw NoSuchElementException ();
-	  }
-	return vertices[tail];
       }
 
       /**
@@ -325,15 +262,16 @@ namespace mccore
 	  vertexWeights = right.vertexWeights;
 	  edges = right.edges;
 	  edgeWeights = right.edgeWeights;
-	  v2vlabel.clear ();
-	  for (l = 0; l < vertices.size (); ++l)
-	    {
-	      v2vlabel.insert (make_pair (&vertices[l], l));
+		  v2vlabel.clear ();
+		  for (l = 0; l < vertices.size (); ++l)
+		    {
+		      v2vlabel.insert (make_pair (&vertices[l], l));
+		    }
+		  ev2elabel.clear ();
+		  ev2elabel.insert (right.ev2elabel.begin (), right.ev2elabel.end ());
+		}
+	      return *this;
 	    }
-	  ev2elabel = right.ev2elabel;
-	}
-      return *this;
-    }
 
     /**
      * Tests whether the graphs are equals.

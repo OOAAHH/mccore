@@ -66,6 +66,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_library (mccore ${MCCORE_SOURCES_CC})
 set_target_properties(mccore PROPERTIES VERSION ${MCCORE_VERSION_STRING})
 target_link_libraries(mccore ${EXT_LIBS})
+if (APPLE)
+  set_target_properties(mccore PROPERTIES INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}")
+endif()
 
 # ajoute le target d'installation
 install (TARGETS mccore DESTINATION lib${LIB_SUFFIX})

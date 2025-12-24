@@ -279,12 +279,12 @@ namespace mccore
 
 	    sortedEdgeMap.insert (make_pair (ev, evIt->second));
 	  }
-	vertices = sortedv;
-	rebuildV2VLabel ();
-	ev2elabel = sortedEdgeMap;
-	delete[] corresp;
-      }
-  }
+		vertices = sortedv;
+		rebuildV2VLabel ();
+		ev2elabel.swap (sortedEdgeMap);
+		delete[] corresp;
+	      }
+	  }
   
     
   void

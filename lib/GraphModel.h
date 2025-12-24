@@ -406,12 +406,12 @@ namespace mccore
 	  vertices = newv;
 	  vertexWeights = newweights;
 	  rebuildV2VLabel ();
-	  edges = newe;
-	  edgeWeights = newew;
-	  ev2elabel = newEdgeMap;
-	  delete[] corresp;
-	}
-    }
+		  edges = newe;
+		  edgeWeights = newew;
+		  ev2elabel.swap (newEdgeMap);
+		  delete[] corresp;
+		}
+	    }
 
   public:
 
